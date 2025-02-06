@@ -1,0 +1,9 @@
+header {
+  @media (max-width: 576px) { 
+    padding: 16px 16px;
+  }
+}
+
+button.navbar-toggler:focus {
+  box-shadow: none;
+}
