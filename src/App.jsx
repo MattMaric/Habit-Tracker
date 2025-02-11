@@ -1,6 +1,6 @@
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Habit from './components/Habit'
+import HabitList from './components/HabitList'
 import './App.css'
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Header />
-      <Habit />
+      <HabitList />
       <Footer />
     </>
   )
