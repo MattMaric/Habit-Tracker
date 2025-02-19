@@ -7,13 +7,3 @@ header {
 button.navbar-toggler:focus {
   box-shadow: none;
 }
-
-div.card-body {
-  position: relative;
-}
-
-button.btn-delete {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
