@@ -1,41 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
+import { FaTimes } from "react-icons/fa";
 
-const Habit = ({ name, onDelete }) => {
-  const [streak, setStreak] = useState(0);
-  const [completed, setCompleted] = useState(false);
-
-  const handleComplete = () => {
-    if (!completed) {
-      setStreak(streak + 1);
-      setCompleted(true);
-    }
-  };
-
-  const resetStreak = () => {
-    setStreak(0);
-    setCompleted(false);
-  };
-
+const Habit = ({ name, completed, streak, onDelete, onComplete, onReset }) => {
   return (
     <div className="card mb-2">
-      <div className="card-body d-flex justify-content-between align-items-center">
+      <div className="card-body d-flex justify-content-between">
         <div>
           <h5 className="card-title">{name}</h5>
           <p className="card-text">Current Streak: {streak} day(s)</p>
-          <button 
-            className={`btn ${completed ? "btn-success" : "btn-primary"} me-2`} 
-            onClick={handleComplete}
-            disabled={completed}
-          >
-            {completed ? "Completed" : "Mark as Complete"}
-          </button>
-          <button className="btn btn-danger" onClick={resetStreak}>
-            Reset Streak
-          </button>
         </div>
-        
-        <button className="btn btn-outline-danger btn-delete" onClick={onDelete} style={{ border: "none" }}>
-          <i className="bi bi-x-lg"></i>
+        <div>
+          <FaTimes 
+          className="position-absolute top-0 end-0 m-2 text-danger" 
+          style={{ cursor: "pointer" }} 
+          onClick={onDelete} 
+        />
+        </div>
+      </div>
+      <div className="card-body">
+        <button
+          className={`btn ${completed ? "btn-success" : "btn-primary"} me-2`}
+          onClick={onComplete}
+          disabled={completed}
+        >
+          {completed ? "Completed" : "Mark as Complete"}
+        </button>
+        <button className="btn btn-danger" onClick={onReset}>
+          Reset Streak
         </button>
       </div>
     </div>
