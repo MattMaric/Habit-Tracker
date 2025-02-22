@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Habit from "./Habit";
 import HabitForm from "./HabitForm";
+import ProgressTracker from "./ProgressTracker";
 
 const HabitList = () => {
   const [habits, setHabits] = useState([
@@ -8,6 +9,8 @@ const HabitList = () => {
     { id: 2, name: "Exercise", completed: false, streak: 0 },
     { id: 3, name: "Read a Book", completed: false, streak: 0 },
   ]);
+
+  const [completionDays, setCompletionDays] = useState(new Set());
 
   const addHabit = (habitName) => {
     if (habitName) {
@@ -26,35 +29,49 @@ const HabitList = () => {
   };
 
   const markAllAsComplete = () => {
-    setHabits(
-      habits.map((habit) => ({
-        ...habit,
-        completed: true,
-        streak: habit.completed ? habit.streak : habit.streak + 1,
-      }))
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) =>
+        habit.completed ? habit : { ...habit, completed: true, streak: habit.streak + 1 }
+      )
     );
+
+    setCompletionDays((prevDays) => {
+      const today = new Date().toDateString();
+      const newDays = new Set(prevDays);
+      newDays.add(today);
+      return newDays;
+    });
   };
 
   const resetAllHabits = () => {
-    setHabits(habits.map((habit) => ({ ...habit, completed: false, streak: 0 })));
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) => ({ ...habit, completed: false, streak: 0 }))
+    );
+    setCompletionDays(new Set());
   };
 
-  const handleComplete = (id) => {
-    setHabits(
-      habits.map((habit) =>
-        habit.id === id
-          ? { ...habit, completed: true, streak: habit.streak + 1 }
-          : habit
-      )
+  const updateHabit = (id, updatedHabit) => {
+    setHabits((prevHabits) =>
+      prevHabits.map((h) => (h.id === id ? updatedHabit : h))
     );
-  };
 
-  const handleReset = (id) => {
-    setHabits(
-      habits.map((habit) =>
-        habit.id === id ? { ...habit, completed: false, streak: 0 } : habit
-      )
-    );
+    const today = new Date().toDateString();
+
+    setCompletionDays((prevDays) => {
+      const newDays = new Set(prevDays);
+      
+      if (updatedHabit.completed) {
+        newDays.add(today);
+      } else {
+        // If there are no completed habits for today, remove today's date
+        const anyCompleted = habits.some((habit) => habit.id !== id && habit.completed);
+        if (!anyCompleted) {
+          newDays.delete(today);
+        }
+      }
+
+      return newDays;
+    });
   };
 
   return (
@@ -75,17 +92,19 @@ const HabitList = () => {
         habits.map((habit) => (
           <Habit
             key={habit.id}
-            name={habit.name}
-            completed={habit.completed}
-            streak={habit.streak}
+            habit={habit}
             onDelete={() => deleteHabit(habit.id)}
-            onComplete={() => handleComplete(habit.id)}
-            onReset={() => handleReset(habit.id)}
+            onUpdate={updateHabit}
           />
         ))
       ) : (
         <p className="text-muted">No habits available. Add a new habit to get started!</p>
       )}
+
+      <ProgressTracker
+        totalCompleted={habits.filter((habit) => habit.completed).length}
+        completionDays={completionDays.size}
+      />
     </div>
   );
 };
