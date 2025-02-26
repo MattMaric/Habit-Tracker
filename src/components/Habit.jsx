@@ -30,7 +30,7 @@ const Habit = ({ habit, onDelete, onUpdate }) => {
           Reset Streak
         </button>
       </div>
-      <FaTimes className="text-danger me-3" style={{ cursor: "pointer" }} onClick={onDelete} />
+      <FaTimes className="text-danger me-3 position-absolute" style={{ cursor: "pointer", top: "16px", right: "0" }} onClick={onDelete} />
     </div>
   );
 };

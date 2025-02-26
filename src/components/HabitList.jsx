@@ -75,37 +75,40 @@ const HabitList = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">My Habits</h2>
-      <HabitForm onAddHabit={addHabit} />
-      {habits.length > 0 && (
-        <div>
-          <button className="btn btn-success mb-3" onClick={markAllAsComplete}>
-            Mark All as Complete
-          </button>
-          <button className="btn btn-danger mb-3 ms-2" onClick={resetAllHabits}>
-            Reset All Habits
-          </button>
-        </div>
-      )}
-      {habits.length > 0 ? (
-        habits.map((habit) => (
-          <Habit
-            key={habit.id}
-            habit={habit}
-            onDelete={() => deleteHabit(habit.id)}
-            onUpdate={updateHabit}
+    <section id="habit-list">
+      <div className="container mt-4">
+        <h2 className="mb-4 text-center">My Habits</h2>
+        <HabitForm onAddHabit={addHabit} />
+        {habits.length > 0 && (
+          <div>
+            <button className="btn btn-success mb-3" onClick={markAllAsComplete}>
+              Mark All as Complete
+            </button>
+            <button className="btn btn-danger mb-3 ms-2" onClick={resetAllHabits}>
+              Reset All Habits
+            </button>
+          </div>
+        )}
+        {habits.length > 0 ? (
+          habits.map((habit) => (
+            <Habit
+              key={habit.id}
+              habit={habit}
+              onDelete={() => deleteHabit(habit.id)}
+              onUpdate={updateHabit}
+            />
+          ))
+        ) : (
+          <p className="text-muted">No habits available. Add a new habit to get started!</p>
+        )}
+        <section id="progress-tracker">
+          <ProgressTracker
+            totalCompleted={habits.filter((habit) => habit.completed).length}
+            completionDays={completionDays.size}
           />
-        ))
-      ) : (
-        <p className="text-muted">No habits available. Add a new habit to get started!</p>
-      )}
-
-      <ProgressTracker
-        totalCompleted={habits.filter((habit) => habit.completed).length}
-        completionDays={completionDays.size}
-      />
-    </div>
+        </section>
+      </div>
+    </section>
   );
 };
 
