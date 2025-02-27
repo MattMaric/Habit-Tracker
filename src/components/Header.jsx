@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <header className="bg-primary text-white py-3">
+    <header className="bg-primary text-white py-3 sticky-top">
       <nav className="navbar navbar-expand-md navbar-dark container">
         <a className="navbar-brand" href="#home">Habit Tracker</a>
         <button
