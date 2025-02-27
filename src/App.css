@@ -7,3 +7,7 @@ header {
 button.navbar-toggler:focus {
   box-shadow: none;
 }
+
+section {
+  scroll-margin-top: 140px;
+}
